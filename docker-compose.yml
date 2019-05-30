@@ -1,0 +1,17 @@
+version: "3.2"
+services:
+  www:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.www
+    ports:
+      - 8080:8080
+    volumes:
+      - type: bind
+        source: ./src
+        target: /root/app
+    networks:
+      - default
+volumes:
+  dbstorage:
+    driver: local

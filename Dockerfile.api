@@ -1,0 +1,22 @@
+#Installer image
+FROM phpstorm/php-71-apache-xdebug:latest
+
+#Install composer
+#COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+#COPY ./api/src/composer.json /var/www/composer.json
+#ENV COMPOSER_ALLOW_SUPERUSER 1
+
+WORKDIR /var/www/
+
+#Install requirements
+RUN apt-get update -y \
+&& apt-get install -y zip git \
+# ffmpeg \
+# && mkdir -p /storage/video \
+# && chown www-data:www-data /storage -R \
+# && chmod 770 /storage -R \
+&& docker-php-ext-install pdo pdo_mysql \
+# && composer install \
+&& echo "upload_max_filesize = 100M" >> "$PHP_INI_DIR/php.ini" \
+&& echo "post_max_size = 100M" >> "$PHP_INI_DIR/php.ini"
+# && echo "upload_tmp_dir = /storage/upload_tmp_dir" >> "$PHP_INI_DIR/php.ini"

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <p>Some js testing</p>
+    <div id="template"></div>
+
+    <div>
+        <ul id="output">
+
+        </ul>
+    </div>
+</body>
+<script>
+/**
+ * let, var, const
+*/
+let title = "This is the title";
+const paragraph = "This is a paragraph with some text!"; // Cannot be changed
+var author = "Who made this?";
+
+(function letconstvar(){
+    //printAll();
+    let anotherTitle = "Another title";
+    title = "Changed title";
+    //paragraph = "Changed paragraph";
+    author = "Changed author";
+    var anotherAuthor = "Another author"; //
+    printAll();
+})();
+
+function printAll(){
+    console.log("Title: " + title);
+    //console.log("Anothertitle: " + anotherTitle); //Nope
+    console.log("paragraph: " + paragraph);
+    console.log("author: " + author);
+    //console.log("Another author: " + anotherAuthor); //Cannot be accessed
+    
+    
+}
+</script>
+<script>
+/**
+ * Klasser og arv 
+ */
+"use strict"
+console.log("Strict mode");
+class User{
+    constructor(username, email, password){
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
+    static countUsers(){
+        console.log("There are 50 users");
+    }
+
+    register(){
+        console.log(this.username + ' is now registered');
+    }
+}
+
+//let starlord = new User("starlord", "star@lord.com", "1234");
+//starlord.register();
+//User.countUsers();
+
+
+class Member extends User{
+    constructor(username, email, password, memberPackage){
+        super(username, email, password);
+        this.package = memberPackage;
+    }
+
+    getPackage(){
+        console.log(this.username + " has package: " + this.package);
+    }
+}
+
+let starlord = new Member("starlord", "e@mail.com", "1234", "premium");
+starlord.getPackage();
+starlord.register();
+</script>
+
+<script>
+/**
+ * template literals
+*/
+"use strict"
+
+let name = 'starlord';
+function makeUppercase(word){
+    return word.toUpperCase();
+}
+let template = `
+    <h1>Hello, ${makeUppercase(name)}</h1>
+    <p>This is a simple template in javascript</p>`;
+
+document.getElementById("template").innerHTML = template;
+
+</script>
+
+<script>
+"use strict"
+
+//var myPromise = Promise.resolve('Foo');
+//myPromise.then((response) => console.log(response));
+
+/*var myPromise = new Promise(function(resolve, reject){
+    setTimeout(()=>resolve(4), 2000);
+})
+
+myPromise.then((res)=>{
+    res+=3;
+    console.log(res);
+});*/
+
+function getData(method, url){
+    return new Promise(function(resolve, reject){
+        var xhr = new XMLHttpRequest();
+        xhr.open(method, url);
+        xhr.onload = function(){
+            if(this.status >= 200 && this.status < 300){
+                resolve(xhr.response);
+            }else{
+                reject({
+                    status: this.status,
+                    statusText: xhr.statusText
+                });
+            }
+        };
+        xhr.onerror = function(){
+            reject({
+                    status: this.status,
+                    statusText: xhr.statusText
+                });
+        }
+        xhr.send();
+    });
+}
+
+getData("GET", 'https://jsonplaceholder.typicode.com/todos').then(function(data){
+console.log(data);
+let todos = JSON.parse(data);
+let output = '';
+for(let todo of todos){
+    output += `
+        <li>
+            <h3>${todo.title}</h3> 
+            <p>Completed: ${todo.completed}</p>   
+        </li>
+    `;
+}
+document.getElementById("output").innerHTML = output;
+}).catch(function(err){
+    console.log(err);
+});
+
+</script>
+</html>

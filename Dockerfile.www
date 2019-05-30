@@ -1,0 +1,17 @@
+FROM node:10-jessie
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends git && \
+    apt-get clean && \
+    npm install -g polymer-cli --unsafe-perm && \
+    npm install --save lit-element
+
+EXPOSE 8080
+
+RUN mkdir -p app
+
+VOLUME /root/app
+
+WORKDIR /root/app
+
+CMD [ "polymer", "serve", "-p", "8080", "-H", "0.0.0.0"]

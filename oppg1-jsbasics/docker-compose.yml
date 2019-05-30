@@ -1,0 +1,14 @@
+version: "3.2"
+services:
+  www:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.www
+    ports:
+      - 8080:80
+    volumes:
+      - type: bind
+        source: ./src
+        target: /usr/local/apache2/htdocs/
+    networks:
+      - default
